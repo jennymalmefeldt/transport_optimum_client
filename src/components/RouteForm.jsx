@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { Button, Form, Container, Message } from "semantic-ui-react";
 import { Route } from "../modules/route_request";
-
 const RouteForm = () => {
   const [routeInformation, setRouteInformation] = useState();
   const [invalidLocationMessage, setInvalidLocationMessage] = useState("");
-
   const createRoute = async (event) => {
     event.preventDefault();
-
     const from = event.target.origin.value;
     const to = event.target.destination.value;
-    const response = await Route.index(from, to);
-    if (response.data.status !== "NOT_FOUND") {
+    const response = await Route.create(from, to);
+    if (response === "Request failed with status code 400") {
+      setInvalidLocationMessage("Request failed with status code 400")
+    } else if (response.data.status !== "NOT_FOUND") {
       setRouteInformation(response.data.routes[0].legs[0]);
       setInvalidLocationMessage("");
-    } else {
-      setInvalidLocationMessage(true);
+    } else if (response.data.status === "NOT_FOUND") {
+      setInvalidLocationMessage(
+        "Cannot find location, please try again with another location."
+      );
       setRouteInformation(false);
       console.log(response);
     }
   };
-
   return (
     <Container>
       {routeInformation && (
@@ -43,7 +43,6 @@ const RouteForm = () => {
           </Message.Header>
         </Message>
       )}
-
       <Form data-cy="route-form" onSubmit={(event) => createRoute(event)}>
         <Form.Input
           label="From:"
@@ -80,5 +79,4 @@ const RouteForm = () => {
     </Container>
   );
 };
-
 export default RouteForm;
