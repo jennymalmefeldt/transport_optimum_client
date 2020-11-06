@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Container, Message } from "semantic-ui-react";
-import { calculateRoute } from "../modules/route_request";
+import { Route } from "../modules/route_request";
 
 const RouteForm = () => {
   const [routeInformation, setRouteInformation] = useState();
@@ -11,14 +11,12 @@ const RouteForm = () => {
 
     const from = event.target.origin.value;
     const to = event.target.destination.value;
-    const response = await calculateRoute.create(from, to);
+    const response = await Route.index(from, to);
     if (response.data.status !== "NOT_FOUND") {
       setRouteInformation(response.data.routes[0].legs[0]);
       setInvalidLocationMessage("");
     } else {
-      setInvalidLocationMessage(
-        "Cannot find location, please try again with another location."
-      );
+      setInvalidLocationMessage(true);
       setRouteInformation(false);
       console.log(response);
     }
