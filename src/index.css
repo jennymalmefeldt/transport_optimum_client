@@ -8,18 +8,22 @@
 
 .route {
   color: black;
+ font-family: Helvetica;
+ font-size: 30px
 }
 
 .origin {
   color: green;
   padding-top: 2%;
   font-size: 120%;
+  font-family: Helvetica;
 }
 
 .destination {
   color: green;
   padding-top: 0.5%;
   font-size: 120%;
+  font-family: Helvetica;
 }
 
 .route-distance {
@@ -35,7 +39,5 @@
 }
 
 .map {
-  padding-top: 5%;
-  margin: 15%;
-  border-color: blueviolet;
+  margin: 10%;
 }
