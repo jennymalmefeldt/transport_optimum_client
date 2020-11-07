@@ -33,3 +33,9 @@
   padding-top: 0.5%;
   font-size: 90%;
 }
+
+.map {
+  padding-top: 5%;
+  margin: 15%;
+  border-color: blueviolet;
+}

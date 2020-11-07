@@ -1,28 +1,42 @@
-import React from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import React, { useState, useEffect } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const Map = () => {
-
+  const [currentPosition, setCurrentPosition] = useState({});
   const apiKey = process.env.REACT_APP_MAPSDIRECTIONS_API_KEY;
 
+  const success = (position) => {
+    const currentPosition = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+    setCurrentPosition(currentPosition);
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(success);
+  });
+
   const mapStyles = {
-    height: "100vh",
+    height: "70vh",
     width: "100%",
   };
 
-  const defaultCenter = {
-    lat: 41.3851,
-    lng: 2.1734,
-  };
+  // const defaultCenter = {
+  //   lat: 41.3851,
+  //   lng: 2.1734,
+  // };
 
   return (
-    <div>
+    <div className="map" data-cy="map">
       <LoadScript googleMapsApiKey={apiKey}>
-        <GoogleMap
+        <GoogleMap 
           mapContainerStyle={mapStyles}
           zoom={13}
-          center={defaultCenter}
-        ></GoogleMap>
+          center={currentPosition}
+        >
+          {currentPosition.lat && <Marker position={currentPosition} />}
+        </GoogleMap>
       </LoadScript>
     </div>
   );
